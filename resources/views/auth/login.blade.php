@@ -30,6 +30,10 @@
             @endforeach
         </div>
 
+        @if (session('success'))
+            <div class="rounded-lg bg-green-50 border border-green-200 text-green-700 text-xs p-3">{{ session('success') }}</div>
+        @endif
+
         @if ($errors->any())
             <div class="rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs p-3">
                 {{ $errors->first() }}
@@ -61,7 +65,7 @@
         </button>
 
         <p class="text-center text-xs text-gray-500">
-            Belum punya akun Pendonor? <a href="#" class="font-semibold text-red-600">Daftar Sekarang</a>
+            Belum punya akun Pendonor? <a href="{{ route('register') }}" class="font-semibold text-red-600">Daftar Sekarang</a>
         </p>
     </form>
     <div class="bg-gray-50 text-center text-[10px] text-gray-400 py-3">Mendukung Target SDG 3: Good Health and Well-being</div>
