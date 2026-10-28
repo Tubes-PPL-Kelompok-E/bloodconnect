@@ -142,7 +142,8 @@ class InstansiTest extends TestCase
         $this->delete("/admin/instansi/{$i->id}")->assertRedirect('/admin/instansi');
 
         $this->assertSoftDeleted('instansi', ['id' => $i->id]);
-        $this->get('/admin/instansi')->assertDontSee('RS Harapan Kita');
+        // Pesan sukses (flash) memuat nama instansi, jadi cek lewat kode yang hanya ada di tabel
+        $this->get('/admin/instansi')->assertDontSee('RS-100');
     }
 
     // ---------- AKSES ----------

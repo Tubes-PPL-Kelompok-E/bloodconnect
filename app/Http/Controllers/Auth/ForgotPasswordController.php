@@ -25,7 +25,7 @@ class ForgotPasswordController extends Controller
             ]);
         }
 
-        // Pesan sama untuk email terdaftar maupun tidak
+        // Pesan sama untuk email terdaftar maupun tidak (agar email tidak bisa ditebak)
         return back()->with('status', 'Jika email terdaftar, tautan reset kata sandi telah dikirim. Periksa kotak masuk Anda.');
     }
 }

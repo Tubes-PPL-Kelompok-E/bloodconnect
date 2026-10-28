@@ -52,7 +52,7 @@
         <div>
             <div class="flex justify-between mb-1">
                 <label class="text-xs font-semibold text-gray-700">Kata Sandi</label>
-                <a href="#" class="text-xs font-semibold text-red-600">Lupa Password?</a>
+                <a href="{{ route('password.request') }}" class="text-xs font-semibold text-red-600">Lupa Password?</a>
             </div>
             <input type="password" name="password" required placeholder="••••••••"
                    class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500">

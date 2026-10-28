@@ -33,6 +33,7 @@ class ResetPasswordController extends Controller
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function (User $user, string $password) {
+                // 'password' otomatis di-hash lewat cast 'hashed' pada model User
                 $user->forceFill([
                     'password'       => $password,
                     'remember_token' => Str::random(60),

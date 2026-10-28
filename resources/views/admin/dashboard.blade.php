@@ -17,7 +17,7 @@
     </div>
     <div class="flex gap-2">
         <button onclick="location.reload()" class="rounded-lg border border-gray-200 bg-gray-100 px-4 py-2 text-xs font-semibold text-gray-700">&#10227; Refresh Data</button>
-        <a href="{{ route('admin.stok') }}" class="rounded-lg bg-red-600 px-4 py-2 text-xs font-semibold text-white hover:bg-red-700">+ Input Darah Masuk</a>
+        <a href="{{ route('admin.kantong.create') }}" class="rounded-lg bg-red-600 px-4 py-2 text-xs font-semibold text-white hover:bg-red-700">+ Input Darah Masuk</a>
     </div>
 </div>
 

@@ -1,37 +1,42 @@
-# BloodConnect - PBI Manajemen Akun & Autentikasi (Laravel 11/12 + Spatie Permission)
+# BloodConnect - Paket Lengkap (PBI-01, PBI-02, Dashboard Admin, Kantong Darah)
 
-## 1. Persiapan project (terminal VS Code)
-```bash
+Isi zip ini adalah FILE TAMBAHAN untuk project Laravel 11/12 (bukan project lengkap).
+
+## 1. Persiapan project
+```powershell
 composer create-project laravel/laravel bloodconnect
 cd bloodconnect
 composer require spatie/laravel-permission
 php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
 ```
-Buat database `bloodconnect` di MySQL/phpMyAdmin, lalu isi `.env` (lihat `env-snippet.txt`).
+Jika project sudah ada (hasil clone): `composer install`, `copy .env.example .env`, `php artisan key:generate`.
 
-## 2. Salin file dari folder ini ke project
-Timpa/tambahkan sesuai struktur: app/, bootstrap/app.php, database/, resources/, routes/web.php, tests/.
-Hapus `tests/Feature/ExampleTest.php` bawaan jika error.
+## 2. Salin isi folder ini ke project (Replace jika ditanya)
+app/, bootstrap/app.php, config/bloodconnect.php, database/, resources/, routes/web.php, tests/
+(README.md dan env-snippet.txt hanya untuk dibaca. Commit dulu pekerjaan Anda sebelum Replace.)
 
-## 3. Jalankan
-```bash
+## 3. Database dan .env
+Nyalakan MySQL (XAMPP), buat database `bloodconnect`, isi .env sesuai env-snippet.txt.
+Tambahkan juga: ADMIN_REGISTER_CODE=kode-rahasia-anda
+(Jika dikosongkan di lingkungan lokal, kode bawaan: PMI-ADMIN-2026. Ganti sebelum dipublikasikan.)
+
+## 4. Jalankan
+```powershell
 php artisan migrate
 php artisan db:seed
+php artisan config:clear
+php artisan test
 php artisan serve
 ```
-Buka http://127.0.0.1:8000/login
+Akun contoh (kata sandi `password123`): admin.pmi@bloodconnect.id, petugas.rs@bloodconnect.id, pendonor@bloodconnect.id
 
-Akun contoh (kata sandi: `password123`):
-- Admin PMI   : admin.pmi@bloodconnect.id
-- Petugas RS  : petugas.rs@bloodconnect.id
-- Pendonor    : pendonor@bloodconnect.id
+## Halaman
+- /login, /register, /forgot-password
+- /admin/dashboard, /admin/stok-darah, /admin/permintaan-rs, /admin/laporan, /admin/kegiatan-donor
+- /admin/users (PBI-01), /admin/instansi (PBI-02)
+- /admin/kantong-darah/create, /admin/uji-saring
 
-Manajemen akun (khusus Admin PMI): http://127.0.0.1:8000/admin/users
-
-## 4. Pengujian
-Di `phpunit.xml`, aktifkan SQLite memori:
-```xml
-<env name="DB_CONNECTION" value="sqlite"/>
-<env name="DB_DATABASE" value=":memory:"/>
-```
-Lalu jalankan: `php artisan test`
+## Catatan
+- Dashboard, Permintaan RS, dan Laporan masih data contoh.
+- Stok Darah, Input Kantong, dan Uji Saring memakai database (tabel kantong_darah).
+- Berkas berita acara disimpan di storage/app/private/berita-acara.

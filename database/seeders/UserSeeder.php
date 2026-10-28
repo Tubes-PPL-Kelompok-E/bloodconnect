@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($data as [$name, $email, $instansi, $role]) {
-            // withTrashed: akun nonaktif tetap ditemukan, lalu diaktifkan kembali
+            // withTrashed: akun nonaktif tetap ditemukan lalu diaktifkan kembali
             $user = User::withTrashed()->firstOrCreate(
                 ['email' => $email],
                 ['name' => $name, 'instansi' => $instansi, 'password' => 'password123']

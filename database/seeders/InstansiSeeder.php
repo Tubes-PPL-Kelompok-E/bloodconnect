@@ -15,7 +15,7 @@ class InstansiSeeder extends Seeder
             ['RS-002', 'RSUD Jakarta', 'rumah_sakit', 'Jl. Merdeka No. 10', 'Jakarta Pusat', '021-5551234', null],
         ];
 
-                foreach ($data as [$kode, $nama, $tipe, $alamat, $kota, $telepon, $email]) {
+        foreach ($data as [$kode, $nama, $tipe, $alamat, $kota, $telepon, $email]) {
             $instansi = Instansi::withTrashed()->firstOrCreate(
                 ['kode' => $kode],
                 compact('nama', 'tipe', 'alamat', 'kota', 'telepon', 'email')
