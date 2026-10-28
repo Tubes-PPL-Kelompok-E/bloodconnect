@@ -1,10 +1,16 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminPageController;
+use App\Http\Controllers\Admin\InstansiController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\KantongDarahController;
+use App\Http\Controllers\Admin\UjiSaringController;
 
 Route::get('/', fn () => Auth::check()
     ? redirect()->route(Auth::user()->homeRoute())
@@ -14,18 +20,21 @@ Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'show'])->name('login');
     Route::post('/login', [LoginController::class, 'login'])->name('login.attempt');
 
-    // Registrasi pendonor (dibatasi 5 percobaan per menit per IP)
+    // Registrasi (dibatasi 5 percobaan per menit per IP)
     Route::get('/register', [RegisterController::class, 'show'])->name('register');
     Route::post('/register', [RegisterController::class, 'store'])->middleware('throttle:5,1')->name('register.store');
+
+    // Lupa kata sandi
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'show'])->name('password.request');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'send'])->middleware('throttle:5,1')->name('password.email');
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'show'])->name('password.reset');
+    Route::post('/reset-password', [ResetPasswordController::class, 'update'])->name('password.update');
 });
 
 Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth')->name('logout');
 
-// Pengalihan halaman sesuai peran
+// Dashboard Petugas RS dan Pendonor
 Route::middleware('auth')->group(function () {
-    Route::view('/admin/dashboard', 'dashboard', ['title' => 'Dashboard Admin PMI'])
-        ->middleware('role:admin_pmi')->name('admin.dashboard');
-
     Route::view('/petugas/dashboard', 'dashboard', ['title' => 'Dashboard Petugas RS'])
         ->middleware('role:petugas_rs')->name('petugas.dashboard');
 
@@ -33,8 +42,25 @@ Route::middleware('auth')->group(function () {
         ->middleware('role:pendonor')->name('pendonor.dashboard');
 });
 
-// Manajemen akun (hanya Admin PMI)
+// Halaman Admin PMI
 Route::middleware(['auth', 'role:admin_pmi'])->prefix('admin')->group(function () {
+    // Dashboard, stok, permintaan, laporan, kegiatan
+    Route::get('dashboard', [AdminPageController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('stok-darah', [KantongDarahController::class, 'index'])->name('admin.stok');
+    Route::get('kantong-darah/create', [KantongDarahController::class, 'create'])->name('admin.kantong.create');
+    Route::get('kantong-darah/cek-batch', [KantongDarahController::class, 'cekBatch'])->name('admin.kantong.cek');
+    Route::post('kantong-darah', [KantongDarahController::class, 'store'])->name('admin.kantong.store');
+    Route::patch('kantong-darah/{kantong}/musnahkan', [KantongDarahController::class, 'musnahkan'])->name('admin.kantong.musnahkan');
+    Route::resource('instansi', InstansiController::class)->except(['show']);
+
+    Route::get('uji-saring', [UjiSaringController::class, 'index'])->name('admin.uji-saring');
+    Route::post('uji-saring/{kantong}', [UjiSaringController::class, 'store'])->name('admin.uji-saring.store');
+    Route::get('uji-saring/{kantong}/berkas', [UjiSaringController::class, 'berkas'])->name('admin.uji-saring.berkas');
+    Route::get('permintaan-rs', [AdminPageController::class, 'permintaan'])->name('admin.permintaan');
+    Route::get('laporan', [AdminPageController::class, 'laporan'])->name('admin.laporan');
+    Route::get('kegiatan-donor', [AdminPageController::class, 'kegiatan'])->name('admin.kegiatan');
+
+    // Manajemen akun (PBI-01)
     Route::resource('users', UserController::class)->except(['show']);
     Route::put('users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
     Route::patch('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');

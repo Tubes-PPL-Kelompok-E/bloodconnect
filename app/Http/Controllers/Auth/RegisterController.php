@@ -16,7 +16,7 @@ class RegisterController extends Controller
 
     public function store(RegisterRequest $request)
     {
-        // Data disimpan ke tabel users (kata sandi di-hash otomatis lewat cast 'hashed')
+        // Disimpan ke tabel users (kata sandi di-hash otomatis lewat cast 'hashed')
         $user = User::create([
             'name'     => $request->name,
             'email'    => $request->email,
@@ -24,13 +24,13 @@ class RegisterController extends Controller
             'password' => $request->password,
         ]);
 
-        // Peran dipaksa pendonor, tidak bisa dipilih pendaftar
-        $user->assignRole('pendonor');
+        // Peran tersimpan di tabel model_has_roles; hanya petugas_rs / pendonor yang lolos validasi
+        $user->assignRole($request->role);
 
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->route('pendonor.dashboard')
+        return redirect()->route($user->homeRoute())
             ->with('success', 'Registrasi berhasil. Selamat datang, ' . $user->name . '!');
     }
 }
