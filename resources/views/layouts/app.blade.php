@@ -26,7 +26,7 @@
         $user->hasRole('admin_pmi') => [
             ['Dashboard', route('admin.dashboard'), request()->routeIs('admin.dashboard')],
             ['Stok Darah', route('admin.stok'), request()->routeIs('admin.stok', 'admin.kantong.*', 'admin.uji-saring*')],
-            ['Permintaan RS', route('admin.permintaan'), request()->routeIs('admin.permintaan')],
+            ['Permintaan RS', route('admin.permintaan'), request()->routeIs('admin.permintaan*')],
             ['Laporan', route('admin.laporan'), request()->routeIs('admin.laporan')],
             ['Kegiatan Donor', route('admin.kegiatan'), request()->routeIs('admin.kegiatan')],
         ],

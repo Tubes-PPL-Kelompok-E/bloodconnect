@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\PermintaanDarah;
 use App\Models\User;
 
 /**
- * Halaman Admin UTD PMI. Data stok/permintaan masih contoh (dummy)
- * sampai tabel kantong darah dan permintaan RS dibuat di PBI berikutnya.
+ * Halaman Admin UTD PMI. Angka dashboard, Laporan, dan jadwal kegiatan masih contoh (dummy).
+ * Stok, uji saring, dan permintaan RS memakai database.
  * Data pendonor di halaman Kegiatan Donor diambil dari database.
  */
 class AdminPageController extends Controller
@@ -18,6 +19,7 @@ class AdminPageController extends Controller
             'title'  => 'Dashboard Admin UTD PMI',
             'stok'   => [['A', 340], ['B', 210], ['AB', 45], ['O', 280]],
             'min'    => 50,
+            'pending' => PermintaanDarah::menunggu()->count(),   // dari database
             'alerts' => [
                 ['BATCH-20260921-A01', 'Gol. A (+) • Sisa 4 Kantong PRC', 'Exp: 3 Hari', 'Tanggal Expired: 09 Oktober 2026', 'red'],
                 ['BATCH-20260925-O02', 'Gol. O (+) • Sisa 2 Kantong WB', 'Exp: 5 Hari', 'Tanggal Expired: 11 Oktober 2026', 'amber'],
@@ -38,28 +40,6 @@ class AdminPageController extends Controller
         ];
 
         return view('admin.stok', ['title' => 'Stok Darah', 'batches' => $batches]);
-    }
-
-    public function permintaan()
-    {
-        $requests = [
-            ['cito' => true,  'id' => 'REQ-2026-1006', 'jam' => '10:15 WIB', 'status' => 'Dalam Perjalanan', 'tone' => 'purple',
-             'rs' => 'RS Siloam Semanggi', 'pasien' => 'Budi Santoso (ICU Bed 04)', 'rm' => 'RM-99482r',
-             'butuh' => '2 Kantong PRC', 'gol' => 'AB (+)', 'stok' => '1 Kantong',
-             'batch' => 'BATCH-20261002-A02, BATCH-20261002-AB03',
-             'kurir' => 'Ahmad (PMI) (B 4125 PMI)', 'suhu' => '3.9°C', 'posisi' => 'Jl. Sudirman', 'aksi' => 'jalan'],
-            ['cito' => true,  'id' => 'REQ-2026-0988', 'jam' => '08:10 WIB', 'status' => 'Diterima RS', 'tone' => 'green',
-             'rs' => 'RS Siloam Semanggi', 'pasien' => 'Agus Salim (Bedah Saraf)', 'rm' => 'RM-773120',
-             'butuh' => '2 Kantong PRC', 'gol' => 'A (+)', 'stok' => '2 Kantong',
-             'batch' => 'BATCH-20260921-A01, BATCH-20260921-A02',
-             'kurir' => 'Rian Pratama (PMI) (B 3320 PMI)', 'suhu' => '4.1°C', 'posisi' => null, 'aksi' => 'selesai'],
-            ['cito' => false, 'id' => 'REQ-2026-1002', 'jam' => '10:30 WIB', 'status' => 'Menunggu Persetujuan', 'tone' => 'amber',
-             'rs' => 'RS Siloam Semanggi', 'pasien' => 'Siti Aminah (Ruang Melati)', 'rm' => 'RM-882194',
-             'butuh' => '1 Kantong WB', 'gol' => 'O (+)', 'stok' => '2 Kantong',
-             'batch' => null, 'kurir' => null, 'suhu' => null, 'posisi' => null, 'aksi' => 'validasi'],
-        ];
-
-        return view('admin.permintaan', ['title' => 'Permintaan RS', 'requests' => $requests]);
     }
 
     public function laporan()

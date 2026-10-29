@@ -4,7 +4,7 @@
     $cards = [
         ['TOTAL KANTONG READY', '1,245', 'Tersedia', 'border-blue-500 bg-blue-50 text-blue-700', 'bg-blue-100'],
         ['EXPIRED < 7 HARI (FEFO ALERT)', '18', 'Prioritas Keluar', 'border-red-500 bg-red-50 text-red-600', 'bg-red-100'],
-        ['PERMINTAAN RS PENDING', '5', 'Perlu Verifikasi', 'border-amber-500 bg-amber-50 text-amber-700', 'bg-amber-100'],
+        ['PERMINTAAN RS PENDING', (string) ($pending ?? 0), 'Perlu Verifikasi', 'border-amber-500 bg-amber-50 text-amber-700', 'bg-amber-100'],
     ];
     $max = max(array_column($stok, 1));
     $rendah = array_filter($stok, fn ($s) => $s[1] < $min);

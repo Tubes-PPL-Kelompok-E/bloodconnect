@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminPageController;
 use App\Http\Controllers\Admin\InstansiController;
 use App\Http\Controllers\Admin\KantongDarahController;
+use App\Http\Controllers\Admin\PermintaanController;
 use App\Http\Controllers\Admin\UjiSaringController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
@@ -54,7 +55,16 @@ Route::middleware(['auth', 'role:admin_pmi'])->prefix('admin')->group(function (
     Route::get('uji-saring', [UjiSaringController::class, 'index'])->name('admin.uji-saring');
     Route::post('uji-saring/{kantong}', [UjiSaringController::class, 'store'])->name('admin.uji-saring.store');
     Route::get('uji-saring/{kantong}/berkas', [UjiSaringController::class, 'berkas'])->name('admin.uji-saring.berkas');
-    Route::get('permintaan-rs', [AdminPageController::class, 'permintaan'])->name('admin.permintaan');
+
+    // Permintaan darah rumah sakit: validasi, alokasi FEFO, dan pengiriman
+    Route::get('permintaan-rs', [PermintaanController::class, 'index'])->name('admin.permintaan');
+    Route::get('permintaan-rs/create', [PermintaanController::class, 'create'])->name('admin.permintaan.create');
+    Route::post('permintaan-rs', [PermintaanController::class, 'store'])->name('admin.permintaan.store');
+    Route::post('permintaan-rs/{permintaan}/validasi', [PermintaanController::class, 'validasi'])->name('admin.permintaan.validasi');
+    Route::post('permintaan-rs/{permintaan}/tolak', [PermintaanController::class, 'tolak'])->name('admin.permintaan.tolak');
+    Route::patch('permintaan-rs/{permintaan}/lacak', [PermintaanController::class, 'lacak'])->name('admin.permintaan.lacak');
+    Route::post('permintaan-rs/{permintaan}/selesai', [PermintaanController::class, 'selesai'])->name('admin.permintaan.selesai');
+
     Route::get('laporan', [AdminPageController::class, 'laporan'])->name('admin.laporan');
     Route::get('kegiatan-donor', [AdminPageController::class, 'kegiatan'])->name('admin.kegiatan');
 
