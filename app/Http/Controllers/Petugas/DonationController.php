@@ -63,6 +63,25 @@ class DonationController extends Controller
         return redirect()->route('petugas.donasi.index')->with('success', 'Data donasi berhasil dikoreksi.');
     }
 
+        public function destroy(Request $request, Donation $donation)
+    {
+        if ($donation->isCancelled()) {
+            return redirect()->route('petugas.donasi.index')->withErrors('Donasi ini sudah dibatalkan.');
+        }
+
+        $data = $request->validate([
+            'cancel_reason' => ['required', 'string', 'max:255'],
+        ]);
+
+        $donation->update([
+            'status'        => Donation::STATUS_DIBATALKAN,
+            'cancel_reason' => $data['cancel_reason'],
+            'cancelled_at'  => now(),
+        ]);
+
+        return redirect()->route('petugas.donasi.index')->with('success', 'Donasi berhasil dibatalkan.');
+    }
+
     private function donors()
     {
         return User::role(config('donor.donor_role'))->orderBy('name')->get(['id', 'name', 'email']);
