@@ -44,6 +44,25 @@ class DonationController extends Controller
         return redirect()->route('petugas.donasi.index')->with('success', 'Donasi berhasil dicatat.');
     }
 
+        public function edit(Donation $donation)
+    {
+        abort_if($donation->isCancelled(), 403, 'Donasi yang dibatalkan tidak dapat diubah.');
+
+        return view('donasi.petugas.edit', [
+            'donation' => $donation,
+            'donors'   => $this->donors(),
+        ]);
+    }
+
+    public function update(Request $request, Donation $donation)
+    {
+        abort_if($donation->isCancelled(), 403, 'Donasi yang dibatalkan tidak dapat diubah.');
+
+        $donation->update($request->validate($this->rules($donation)));
+
+        return redirect()->route('petugas.donasi.index')->with('success', 'Data donasi berhasil dikoreksi.');
+    }
+
     private function donors()
     {
         return User::role(config('donor.donor_role'))->orderBy('name')->get(['id', 'name', 'email']);
