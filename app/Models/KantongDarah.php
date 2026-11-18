@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class KantongDarah extends Model
 {
@@ -88,5 +89,10 @@ class KantongDarah extends Model
             'rhesus'     => $this->rhesus,
             'komponen'   => $this->komponen,
         ];
+    }
+
+        public function pemusnahan(): HasOne
+    {
+        return $this->hasOne(PemusnahanKantong::class, 'kantong_id');
     }
 }

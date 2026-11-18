@@ -18,6 +18,7 @@ use App\Http\Controllers\Pendonor\KegiatanController as PendonorKegiatanControll
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\PemusnahanController;
 
 Route::get('/', fn () => Auth::check()
     ? redirect()->route(Auth::user()->homeRoute())
@@ -79,6 +80,17 @@ Route::middleware(['auth', 'role:admin_pmi'])->prefix('admin')->group(function (
     Route::get('uji-saring', [UjiSaringController::class, 'index'])->name('admin.uji-saring');
     Route::post('uji-saring/{kantong}', [UjiSaringController::class, 'store'])->name('admin.uji-saring.store');
     Route::get('uji-saring/{kantong}/berkas', [UjiSaringController::class, 'berkas'])->name('admin.uji-saring.berkas');
+        // Kantong kedaluwarsa dan pemusnahan
+    Route::get('kedaluwarsa', [PemusnahanController::class, 'kedaluwarsa'])->name('admin.kedaluwarsa');
+    Route::post('kedaluwarsa/periksa', [PemusnahanController::class, 'periksa'])->name('admin.kedaluwarsa.periksa');
+
+    Route::get('pemusnahan', [PemusnahanController::class, 'index'])->name('admin.pemusnahan');
+    Route::get('pemusnahan/buat', [PemusnahanController::class, 'create'])->name('admin.pemusnahan.create');
+    Route::post('pemusnahan', [PemusnahanController::class, 'store'])->name('admin.pemusnahan.store');
+    Route::get('pemusnahan/{pemusnahan}', [PemusnahanController::class, 'show'])->name('admin.pemusnahan.show');
+    Route::get('pemusnahan/{pemusnahan}/ubah', [PemusnahanController::class, 'edit'])->name('admin.pemusnahan.edit');
+    Route::put('pemusnahan/{pemusnahan}', [PemusnahanController::class, 'update'])->name('admin.pemusnahan.update');
+    Route::delete('pemusnahan/{pemusnahan}', [PemusnahanController::class, 'destroy'])->name('admin.pemusnahan.destroy');
 
     // Lokasi penyimpanan kantong
     Route::get('lokasi-penyimpanan', [LokasiPenyimpananController::class, 'index'])->name('admin.lokasi');

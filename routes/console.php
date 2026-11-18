@@ -10,3 +10,8 @@ Artisan::command('inspire', function () {
 
 // Tandai kantong kedaluwarsa tiap jam (saat pengembangan: "php artisan schedule:work")
 Schedule::command('bloodconnect:tandai-kedaluwarsa')->hourly()->withoutOverlapping();
+
+Schedule::command('kantong:tandai-kedaluwarsa')
+    ->dailyAt('00:05')
+    ->timezone('Asia/Jakarta')
+    ->withoutOverlapping();
