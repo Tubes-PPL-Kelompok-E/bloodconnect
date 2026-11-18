@@ -55,12 +55,14 @@ class KantongDarahTest extends TestCase
 
     public function test_kode_batch_otomatis_jika_kosong(): void
     {
+        \Carbon\Carbon::setTestNow('2026-10-07');
         $tgl = '2026-10-06';
         $this->post('/admin/kantong-darah', $this->payload(['kode_batch' => '', 'tanggal_donor' => $tgl]));
         $this->post('/admin/kantong-darah', $this->payload(['kode_batch' => '', 'tanggal_donor' => $tgl]));
 
         $this->assertDatabaseHas('kantong_darah', ['kode_batch' => 'BATCH-20261006-A01']);
         $this->assertDatabaseHas('kantong_darah', ['kode_batch' => 'BATCH-20261006-A02']);
+        \Carbon\Carbon::setTestNow();
     }
 
     public function test_kode_batch_harus_unik(): void

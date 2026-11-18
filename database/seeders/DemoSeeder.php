@@ -43,6 +43,9 @@ class DemoSeeder extends Seeder
             ['Harjuno Juno',        'L', 'A',  'neg', 'Bandung',          150],
             ['Maya Padasari',       'P', 'O',  'pos', 'Bekasi',           95],
             ['Sumber Alam',         'L', 'AB', 'neg', 'Jakarta Pusat',    62],
+            ['Budi Santoso',        'L', 'B',  'pos', 'Jakarta Selatan',  70],
+            ['Dewi Anggraini',      'P', 'A',  'pos', 'Jakarta Barat',    85],
+            ['Nadia Putri',         'P', 'O',  'pos', 'Jakarta Timur',    90],
         ];
 
         foreach ($data as $i => [$nama, $jk, $gol, $rh, $kota, $hari]) {
